@@ -1,7 +1,10 @@
-import Image from "next/image";
+"use client";
+import { useAppSelector } from "@/redux/hooks";
 
 export default function Home() {
+
+  const user = useAppSelector(state => state.user)
   return (
-   <h1>HomePage</h1>
+   <h1>Hello, {user.name}</h1>
   );
 }
