@@ -20,7 +20,7 @@ const useForgotPassword = () => {
       );
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Send email success");
       router.push("/");
     },
