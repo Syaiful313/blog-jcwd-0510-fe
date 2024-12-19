@@ -1,21 +1,33 @@
 "use client";
 
+import MarkDown from "@/components/Markdown";
 import { Badge } from "@/components/ui/badge";
 import useGetBlog from "@/hooks/api/blog/useGetBlog";
 import { format } from "date-fns";
 import Image from "next/image";
 import { FC } from "react";
+import ModalDelete from "./components/ModalDelete";
 import SkeletonBlog from "./components/SkeletonBlog";
-import MarkDown from "@/components/Markdown";
+import { useDeleteBlog } from "@/hooks/api/blog/useDeleteBlog";
+import { useAppSelector } from "@/redux/hooks";
 
 interface BlogDetailPageProps {
   blogId: number;
 }
 
 const BlogDetailPage: FC<BlogDetailPageProps> = ({ blogId }) => {
-  const { data, isPending } = useGetBlog(blogId);
+  const { data, isPending: isPendingGet } = useGetBlog(blogId);
 
-  if (isPending) {
+  const { mutateAsync: deleteBlog, isPending: isPendingDelete } =
+    useDeleteBlog();
+
+  const { id } = useAppSelector((state) => state.user);
+
+  const handleDelete = async () => {
+    await deleteBlog(blogId);
+  };
+
+  if (isPendingGet) {
     return <SkeletonBlog />;
   }
 
@@ -28,8 +40,12 @@ const BlogDetailPage: FC<BlogDetailPageProps> = ({ blogId }) => {
       <section className="mb-10 space-y-2">
         <Badge>{data.category}</Badge>
         <h1 className="my-2 text-4xl font-bold">{data.title}</h1>
-
-        <p>{format(new Date(), "dd MMMM yyyy")} - {data.user.name}</p>
+        <div className="flex items-center justify-between">
+          <p>
+            {format(new Date(), "dd MMMM yyyy")} - {data.user.name}
+          </p>
+          {id === data.userId && <ModalDelete onClickDelete={handleDelete} />}
+        </div>
 
         <div className="relative h-[500px]">
           <Image
