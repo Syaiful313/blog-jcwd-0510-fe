@@ -35,7 +35,7 @@ const BlogCard: FC<BlogCardProps> = ({ blog }) => {
           <div className="flex items-center gap-2">
             <Badge
               variant="outline"
-              className="rounded-sm bg-green-100 text-green-600"
+              className="rounded-sm bg-gray-300 text-gray-900"
             >
               {blog.category}
             </Badge>
@@ -52,7 +52,7 @@ const BlogCard: FC<BlogCardProps> = ({ blog }) => {
             </h1>
           </CardTitle>
           <CardDescription>
-            <p className="line-clamp-2">{blog.description}</p>
+            <p className="line-clamp-1">{blog.description}</p>
           </CardDescription>
         </CardContent>
       </Card>
