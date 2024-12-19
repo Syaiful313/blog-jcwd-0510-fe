@@ -12,7 +12,6 @@ const Navbar = () => {
   const logout = () => {
     localStorage.removeItem("blog-storage");
     dispatch(logoutAction());
-    router.push("/login");
   };
 
   return (
@@ -28,7 +27,12 @@ const Navbar = () => {
             <Link href="/">Profile</Link>
 
             {!user.id && <Link href="/login">Sign In</Link>}
-            {!!user.id && <p onClick={logout}>Logout</p>}
+            {!!user.id && (
+              <>
+                <p onClick={() => router.push("/write")}>Write</p>
+                <p onClick={logout}>Logout</p>
+              </>
+            )}
           </div>
         </div>
       </div>
